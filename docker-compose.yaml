@@ -1,0 +1,25 @@
+
+services:
+  postgres:
+    image: postgres:16.3-bookworm
+    container_name: mss-pg16
+    ports:
+      - 5555:5432
+    env_file:
+      - .env.local
+    volumes:
+      - mss-db-vol:/var/lib/postgresql/data
+
+  mongodb:
+    image: mongo:7.0.12
+    container_name: mss-mongo7
+    ports:
+      - 27018:27017
+    env_file:
+      - .env.local
+    volumes:
+      - mss-db-vol:/data/db
+      - ./scripts/mongo:/docker-entrypoint-initdb.d
+
+volumes:
+  mss-db-vol:
