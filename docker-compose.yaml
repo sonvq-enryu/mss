@@ -8,7 +8,7 @@ services:
     env_file:
       - .env.local
     volumes:
-      - mss-db-vol:/var/lib/postgresql/data
+      - mss-postgres-vol:/var/lib/postgresql/data
 
   mongodb:
     image: mongo:7.0.12
@@ -18,8 +18,9 @@ services:
     env_file:
       - .env.local
     volumes:
-      - mss-db-vol:/data/db
-      - ./scripts/mongo:/docker-entrypoint-initdb.d
+      - mss-mongo-vol:/data/db
+      - ./scripts/mongodb:/docker-entrypoint-initdb.d
 
 volumes:
-  mss-db-vol:
+  mss-postgres-vol:
+  mss-mongo-vol:
