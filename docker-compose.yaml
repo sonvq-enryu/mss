@@ -7,6 +7,10 @@ services:
       - 5555:5432
     env_file:
       - .env.local
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     volumes:
       - mss-postgres-vol:/var/lib/postgresql/data
 
@@ -17,9 +21,42 @@ services:
       - 27018:27017
     env_file:
       - .env.local
+    environment:
+      - MONGO_INITDB_DATABASE
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
     volumes:
       - mss-mongo-vol:/data/db
       - ./scripts/mongodb:/docker-entrypoint-initdb.d
+
+  broker:
+    image: confluentinc/cp-kafka:latest
+    hostname: broker
+    container_name: broker
+    ports:
+      - 9092:9092
+      - 9101:9101
+    env_file:
+      - .env.local
+    environment:
+      - KAFKA_NODE_ID
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+      - KAFKA_ADVERTISED_LISTENERS
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+      - KAFKA_JMX_PORT
+      - KAFKA_JMX_HOSTNAME
+      - KAFKA_PROCESS_ROLES
+      - KAFKA_CONTROLLER_QUORUM_VOTERS
+      - KAFKA_LISTENERS
+      - KAFKA_CONTROLLER_LISTENER_NAMES
+      - KAFKA_LOG_DIRS
+      # Replace CLUSTER_ID with a unique base64 UUID using "bin/kafka-storage.sh random-uuid" 
+      # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
+      - CLUSTER_ID
+
 
 volumes:
   mss-postgres-vol:
