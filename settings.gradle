@@ -1,4 +1,0 @@
-rootProject.name='mss-project'
-
-include 'product'
-include 'order'
