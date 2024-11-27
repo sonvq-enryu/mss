@@ -1,4 +1,4 @@
-package com.mss.product.repository;
+package com.mss.product.repository.postgres;
 
 import com.mss.product.model.postgres.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

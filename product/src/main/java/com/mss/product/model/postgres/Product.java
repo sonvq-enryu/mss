@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Setter
 public class Product extends AbstractAuditEntity {
     @Id
+    @UuidGenerator
     private UUID id;
 
     private String name;

@@ -9,7 +9,7 @@ spring:
     password: admin
     driver-class-name: org.postgresql.Driver
     hikari:
-      auto-commit: false
+      auto-commit: true
       connection-timeout: 30000
       maximum-pool-size: 10
       minimum-idle: 5
@@ -39,3 +39,17 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6666
+      password: redis-admin
+      database: 0
+      timeout: 60000
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 8
+          max-wait: 10000
+          max-idle: 8
+          min-idle: 0
