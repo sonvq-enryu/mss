@@ -2,3 +2,4 @@ rootProject.name = 'mss'
 
 include 'product'
 include 'identity'
+include 'share_module'

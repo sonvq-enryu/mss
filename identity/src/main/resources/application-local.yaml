@@ -1,6 +1,6 @@
 
 server:
-  port: 3001
+  port: 3002
 
 spring:
   datasource:
@@ -34,19 +34,28 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
-    show-sql: true
-  data:
-    redis:
-      host: localhost
-      port: 6666
-      password: redis-admin
-      database: 0
-      timeout: 60000
-      lettuce:
-        pool:
-          enabled: true
-          max-active: 8
-          max-wait: 10000
-          max-idle: 8
-          min-idle: 0
+      ddl-auto: create-drop
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6666
+#      password: redis-admin
+#      database: 0
+#      timeout: 60000
+#      lettuce:
+#        pool:
+#          enabled: true
+#          max-active: 8
+#          max-wait: 10000
+#          max-idle: 8
+#          min-idle: 0
+
+jwt:
+  secret: abc123asdflasjdfklasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasddfaqwerqgsadzvasdrflaskdjfqoiweurqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerasdfasdf
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.hibernate.SQL: debug
+    org.springframework.security: debug

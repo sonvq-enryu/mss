@@ -1,13 +1,9 @@
 
 spring:
-  application.name: product-service
+  application.name: identity-service
   threads:
     virtual:
       enabled: true
   jackson:
     default-property-inclusion: non_null
     property-naming-strategy: SNAKE_CASE
-
-springdoc:
-  swagger-ui.path: /index.html
-  api-docs.path: /api-docs
