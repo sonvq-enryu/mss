@@ -1,5 +1,6 @@
 package com.mss.identity.exception.handler;
 
+import com.mss.core.exception.ApiException;
 import com.mss.identity.dto.common.ErrorVm;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +24,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorVm> handleException(Exception e) {
         log.error("Exception occurred", e);
         return ResponseEntity.status(500).body(new ErrorVm(500, "Internal Server Error", "Internal Server Error"));
+    }
+
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorVm> handleApiException(ApiException e) {
+        return switch (e.statusCode()) {
+            case UNAUTHORIZED -> ResponseEntity.status(e.statusCode().code()).body(new ErrorVm(e));
+
+        }
     }
 }

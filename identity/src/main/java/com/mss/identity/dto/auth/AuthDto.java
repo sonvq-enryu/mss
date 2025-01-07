@@ -2,6 +2,7 @@ package com.mss.identity.dto.auth;
 
 import com.mss.identity.dto.user.UserDto;
 import com.mss.identity.model.enumeration.Gender;
+import com.mss.identity.model.enumeration.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,11 +10,11 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthDto {
 
     @Getter
     @Setter
-
     public static class SignInRequest {
         @NotBlank(message = "Email cannot be empty")
         @Email(message = "Not in email format")
@@ -34,6 +35,13 @@ public class AuthDto {
         private String phoneNumber;
         private String address;
         private Gender gender;
+        private UserRole role;
+    }
+
+    @Getter
+    @Setter
+    public static class RefreshTokenRequest {
+        private String refreshToken;
     }
 
     @Getter

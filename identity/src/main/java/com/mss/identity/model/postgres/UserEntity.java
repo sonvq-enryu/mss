@@ -8,7 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "public", name = "user")
+@Table(name = "account")
 @Getter
 @Setter
 @Builder
@@ -16,18 +16,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity extends AbstractAuditEntity {
-
     @Id
     @UuidGenerator
     private UUID id;
-
     @Column(nullable = false, unique = true, updatable = false)
     private String username;
-
     @Column(nullable = false)
     private String hashPassword;
-    private String salt;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToOne
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    public UserProfileEntity profile;
 }

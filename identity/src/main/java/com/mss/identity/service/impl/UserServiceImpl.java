@@ -1,11 +1,14 @@
 package com.mss.identity.service.impl;
 
+import com.mss.identity.dto.auth.AuthDto;
+import com.mss.identity.mapper.UserMapper;
+import com.mss.identity.mapper.UserProfileMapper;
 import com.mss.identity.model.postgres.UserEntity;
 import com.mss.identity.repository.postgres.UserRepository;
-import com.mss.identity.service.UserProfileService;
 import com.mss.identity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final UserProfileService userProfileService;
+    private final UserMapper userMapper;
+    private final UserProfileMapper userProfileMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserEntity> findUserByUsername(String username) {
@@ -26,6 +31,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserEntity createUser(UserEntity user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public UserEntity createUserIncludeProfile(AuthDto.SignUpRequest request) {
+        var hashPassword = passwordEncoder.encode(request.getPassword());
+        var userProfile = userProfileMapper.toEntity(request);
+        var user = userMapper.toEntity(request, hashPassword, userProfile);
+
         return userRepository.save(user);
     }
 }

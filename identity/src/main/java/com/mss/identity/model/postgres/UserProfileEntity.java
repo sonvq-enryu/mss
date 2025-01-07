@@ -14,22 +14,22 @@ import java.util.UUID;
 @Setter
 @Entity
 @ToString
-@Table(schema = "public", name = "user_profile")
+@Table(name = "user_profile")
 public class UserProfileEntity extends AbstractAuditEntity {
     @Id
     @UuidGenerator
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    private UserEntity user;
-
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
-
-    @Enumerated(EnumType.ORDINAL)
-    private Gender gender;
-    private String phoneNumber;
     private String address;
+    @Column(length = 15)
+    private String phoneNumber;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(columnDefinition = "smallint")
+    private Gender gender;
+
+    @OneToOne(mappedBy = "profile")
+    public UserEntity user;
 }

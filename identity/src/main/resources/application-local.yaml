@@ -1,57 +1,20 @@
 
 server:
-  port: 3002
+  port: ${IDENTITY_PORT:6001}
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5555/postgres
-    username: admin
-    password: admin
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${IDENTITY_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    hikari:
-      auto-commit: true
-      connection-timeout: 30000
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      pool-name: App-DB-Pool
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
-        useLocalSessionState: true
-        rewriteBatchedStatements: true
-        cacheResultSetMetadata: true
-        cacheServerConfiguration: true
-        elideSetAutoCommits: true
-        maintainTimeStats: false
-        useUnicode: true
-        characterEncoding: UTF-8
-        characterSetResults: UTF-8
-        serverTimezone: UTC
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
 #  data:
 #    redis:
-#      host: localhost
-#      port: 6666
-#      password: redis-admin
+#      host: ${REDIS_HOST:localhost}
+#      port: ${REDIS_PORT:6379}
+#      password: ${REDIS_PASSWORD:admin}
 #      database: 0
-#      timeout: 60000
-#      lettuce:
-#        pool:
-#          enabled: true
-#          max-active: 8
-#          max-wait: 10000
-#          max-idle: 8
-#          min-idle: 0
-
-jwt:
-  secret: abc123asdflasjdfklasdasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasddfaqwerqgsadzvasdrflaskdjfqoiweurqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerqwerasdfasdf
+#      timeout: 5000
 
 logging:
   level:
@@ -59,3 +22,8 @@ logging:
     org.springframework.web: debug
     org.hibernate.SQL: debug
     org.springframework.security: debug
+
+jwt:
+  secret: ${JWT_SECRET}
+  issuer: ${JWT_ISSUER}
+  duration-in-minutes: ${JWT_DURATION}

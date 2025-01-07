@@ -1,0 +1,40 @@
+services:
+  mss-postgres:
+    image: postgres:17.2-bookworm
+    container_name: mss-postgres
+    ports:
+      - "5555:5432"
+    env_file:
+      - .env.local
+    volumes:
+      - ps-postgres-vol:/var/lib/postgresql/data
+    networks:
+      - ps-network
+
+  mss-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.16.1
+    container_name: mss-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    env_file:
+      - .env.local
+    ports:
+      - "9200:9200"
+
+  broker:
+    image: confluentinc/cp-kafka:7.7.1
+    hostname: broker
+    container_name: broker
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    env_file:
+      - .env.local
+
+volumes:
+  ps-postgres-vol:
+
+networks:
+  ps-network:
+    driver: bridge

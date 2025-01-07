@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -31,7 +34,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<AuthDto.SignUpResponse> signUp(@RequestBody @Valid AuthDto.SignUpRequest request) {
+    public ResponseEntity<AuthDto.SignUpResponse> signUp(@RequestBody @Valid AuthDto.SignUpRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return ResponseEntity.ok(authService.userSignUp(request));
     }
 
