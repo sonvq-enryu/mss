@@ -26,7 +26,7 @@ public class UserEntity extends AbstractAuditEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     public UserProfileEntity profile;
 }

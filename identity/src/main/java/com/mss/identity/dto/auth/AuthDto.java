@@ -41,7 +41,7 @@ public class AuthDto {
     @Getter
     @Setter
     public static class RefreshTokenRequest {
-        private String refreshToken;
+        private String token;
     }
 
     @Getter
@@ -57,6 +57,7 @@ public class AuthDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class SignUpResponse {
         private String accessToken;
         private String refreshToken;

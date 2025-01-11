@@ -1,5 +1,6 @@
 package com.mss.identity.controller.auth;
 
+import com.mss.core.exception.ApiException;
 import com.mss.identity.dto.auth.AuthDto;
 import com.mss.identity.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,20 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad Request"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    public ResponseEntity<AuthDto.SignInResponse> signIn(@RequestBody @Valid AuthDto.SignInRequest request) {
+    public ResponseEntity<AuthDto.SignInResponse> signIn(@RequestBody @Valid AuthDto.SignInRequest request) throws ApiException {
         return ResponseEntity.ok(authService.signIn(request));
+    }
+
+    @PostMapping(value = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Refresh token API", description = "Use refresh token to redeem new access token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AuthDto.SignInResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    public ResponseEntity<AuthDto.SignInResponse> refresh(@RequestBody final AuthDto.RefreshTokenRequest request) throws ApiException {
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
 }

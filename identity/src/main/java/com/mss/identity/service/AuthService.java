@@ -9,4 +9,5 @@ import java.security.spec.InvalidKeySpecException;
 public interface AuthService {
     AuthDto.SignUpResponse userSignUp(AuthDto.SignUpRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException;
     AuthDto.SignInResponse signIn(AuthDto.SignInRequest request) throws ApiException;
+    AuthDto.SignInResponse refreshToken(AuthDto.RefreshTokenRequest request) throws ApiException;
 }

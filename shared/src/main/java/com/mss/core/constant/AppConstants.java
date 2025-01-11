@@ -3,6 +3,7 @@ package com.mss.core.constant;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 public class AppConstants {
@@ -10,14 +11,14 @@ public class AppConstants {
 
     @Getter
     @Accessors(chain = true, fluent = true)
-    @AllArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     public enum CustomClaim {
         UID("uid", "Unique ID"),
         IP("ip", "IP"),
         ROLE("role", "Role of user"),
         SCOPE("scope", "Token scopes");
 
-        private final String name;
+        private final String val;
         private final String description;
     }
 
@@ -25,11 +26,14 @@ public class AppConstants {
     @Accessors(chain = true, fluent = true)
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
     public enum CustomJwtScope {
+        PORTAL("portal", "Access API of portal scope"),
         REFRESH_TOKEN("refresh_token", "Refresh token scope"),
         RESET_PASSWORD("reset_password", "Reset password scope");
 
-        private final String name;
+        private final String val;
         private final String description;
+
+
     }
 
     @Getter

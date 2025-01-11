@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtConfiguration {
     private String secret;
     private int accessDuration;
-    private int refreshableDuration;
+    private int refreshDuration;
     private String issuer;
     private List<String> aud;
 
@@ -25,7 +25,7 @@ public class JwtConfiguration {
         return TimeUnit.MINUTES.toMillis(accessDuration);
     }
 
-    public long getRefreshableDurationInMillis() {
-        return TimeUnit.MINUTES.toMillis(refreshableDuration);
+    public long getRefreshDurationInMillis() {
+        return TimeUnit.MINUTES.toMillis(refreshDuration);
     }
 }

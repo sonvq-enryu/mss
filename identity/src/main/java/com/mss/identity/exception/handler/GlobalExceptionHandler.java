@@ -28,9 +28,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorVm> handleApiException(ApiException e) {
-        return switch (e.statusCode()) {
-            case UNAUTHORIZED -> ResponseEntity.status(e.statusCode().code()).body(new ErrorVm(e));
-
-        }
+        var vm = new ErrorVm(e, e.getMessage());
+        return ResponseEntity.status(e.statusCode().code()).body(vm);
     }
 }

@@ -1,8 +1,9 @@
 package com.mss.identity.filter;
 
+import com.mss.core.utils.DateUtils;
+import com.mss.identity.service.InvalidateTokenService;
 import com.mss.identity.service.JwtDecoder;
-import com.mss.identity.service.impl.JwtService;
-import com.mss.identity.service.security.MssUserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,18 +12,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.UUID;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
-    private final MssUserDetailsServiceImpl userDetailsService;
     private final JwtDecoder jwtDecoder;
+    private final InvalidateTokenService invalidateTokenService;
 
     private static final String PREFIX_TOKEN = "Bearer ";
 
@@ -38,27 +42,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         final var token = authHeader.split(" ")[1].trim();
-        var claims =
-
+        var claims = jwtDecoder.parseToken(token);
+        var authToken = new UsernamePasswordAuthenticationToken(claims, null, Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(authToken);
         filterChain.doFilter(request, response);
-
-//        final var header = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        if (header != null && header.startsWith("Bearer ")) {
-//            final var token = header.split(" ")[1].trim();
-//            String username = null;
-//            if (jwtService.isValidToken(token)) {
-//                username = jwtService.extractUsername(token);
-//            }
-//            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//                var userDetails = userDetailsService.loadUserByUsername(username);
-//                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            }
-//        }
-//        filterChain.doFilter(request, response);
     }
 
-    private boolean validate() {
+    private boolean isAuth(Claims claims) {
+        if (claims.getExpiration().after(DateUtils.now())) {
+            return false;
+        }
 
+        // token is black list
+        if (invalidateTokenService.isBlackList(UUID.fromString(claims.getId()))) {
+            return false;
+        }
+        return true;
     }
 }

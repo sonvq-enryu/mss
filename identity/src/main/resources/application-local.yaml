@@ -26,4 +26,5 @@ logging:
 jwt:
   secret: ${JWT_SECRET}
   issuer: ${JWT_ISSUER}
-  duration-in-minutes: ${JWT_DURATION}
+  access-duration: ${ACCESS_DURATION:60}
+  refresh-duration: ${REFRESH_DURATION:1440}

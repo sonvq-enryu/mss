@@ -3,6 +3,7 @@ package com.mss.identity.service.impl;
 import com.mss.identity.dto.auth.AuthDto;
 import com.mss.identity.mapper.UserMapper;
 import com.mss.identity.mapper.UserProfileMapper;
+import com.mss.identity.model.enumeration.UserRole;
 import com.mss.identity.model.postgres.UserEntity;
 import com.mss.identity.repository.postgres.UserRepository;
 import com.mss.identity.service.UserService;
@@ -37,9 +38,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserEntity createUserIncludeProfile(AuthDto.SignUpRequest request) {
-        var hashPassword = passwordEncoder.encode(request.getPassword());
         var userProfile = userProfileMapper.toEntity(request);
-        var user = userMapper.toEntity(request, hashPassword, userProfile);
+        var user = userMapper.toEntity(request, passwordEncoder.encode(request.getPassword()), userProfile);
+        user.setRole(UserRole.USER);
 
         return userRepository.save(user);
     }
